@@ -69,7 +69,14 @@ results_body = getBody()
 # assumes date in email is in format like: Dec 9, 2021
 if(results_body): 
     if('Check-Out:' in results_body):
-        results_checkout = results_body.split('Check-Out:')[1].split('\n')[0].strip()
+        if(len(results_body.split('Check-Out:')[1].split('\n')[0].strip())):
+            results_checkout = results_body.split('Check-Out:')[1].split('\n')[0].strip()
+        elif(len(results_body.split('Check-Out:')[1].split('\n')[1].strip())):
+            results_checkout = results_body.split('Check-Out:')[1].split('\n')[1].strip()
+        else:
+    	    secureData.log("Checked for Evolve reservations - found one but couldn't parse check-out date")
+    	    quit()
+    	
         results_cleaning_date = (datetime.datetime.strptime(results_checkout, "%b %d, %Y") + datetime.timedelta(days=1))
         results_cleaning_date_string = results_cleaning_date.strftime('%B %-d')
         results_cleaning_date_string_log = results_cleaning_date.strftime('%Y-%m-%d')
