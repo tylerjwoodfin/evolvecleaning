@@ -144,8 +144,6 @@ def calendar():
         print(start, event['summary'])
 
 def main():
-    print("Starting Main")
-
     # parse body
     results_body = getBody()
 
@@ -188,5 +186,8 @@ params = {
 }
 
 if __name__ == "__main__":
-    func = params.get(sys.argv[1], lambda: secureData.log("Error starting Evolve-Cleaning-Request-Automation"))
-    func()
+    if(len(sys.argv) > 1):
+        func = params.get(sys.argv[1], lambda: main)
+        func()
+    else:
+        main()
