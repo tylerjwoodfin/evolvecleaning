@@ -17,7 +17,7 @@ sys.path.insert(0, f'/home/{userDir}/Git/Tools')
 sys.path.insert(0, f'/home/{userDir}/Git/SecureData')
 
 import mail
-import secureDataNew as secureData
+import secureData
 
 
 data = mail.check()
