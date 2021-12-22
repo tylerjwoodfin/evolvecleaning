@@ -17,7 +17,7 @@ sys.path.insert(0, f'/home/{userDir}/Git/Tools')
 sys.path.insert(0, f'/home/{userDir}/Git/SecureData')
 
 import mail
-import secureData
+import secureDataNew as secureData
 
 
 data = mail.check()
@@ -170,10 +170,10 @@ def main():
                 email = f"""Hi,\n\nCould you please schedule a cleaning again at {results_address} at any time on {results_cleaning_date_string}?"""
 
             # send email
-            if(results_cleaning_date_string_log not in secureData.file('AIRBNB_CHECKOUT_LOG')):
-                secureData.appendUnique("AIRBNB_CHECKOUT_LOG", results_cleaning_date.strftime('%Y-%m-%d'))
-                mail.send(f"Cleaning Request, {results_cleaning_date_string}", email, secureData.variable("AIRBNB_CLEANER_EMAIL_SIGNATURE"), secureData.variable("AIRBNB_CLEANER_EMAIL"), "Tyler Woodfin")
-                secureData.log(f"Checked for Evolve reservations - found and sent to {secureData.variable('AIRBNB_CLEANER_EMAIL')}")
+            if(results_cleaning_date_string_log not in '\n'.join(secureData.getFileAsArray("AIRBNB_CHECKOUT_LOG"))):
+                secureData.log(results_cleaning_date.strftime('%Y-%m-%d'), "AIRBNB_CHECKOUT_LOG")
+                mail.send(f"Cleaning Request, {results_cleaning_date_string}", email, secureData.getItem("airbnb", "email_signature"), secureData.getItem("airbnb", "cleaner_email"), "Tyler Woodfin")
+                secureData.log(f"Checked for Evolve reservations - found and sent to {secureData.getItem('airbnb', 'cleaner_email')}")
             else:
                 secureData.log("Checked for Evolve reservations - found only existing reservations")
         else:
