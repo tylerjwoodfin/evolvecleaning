@@ -10,14 +10,13 @@ import pwd
 import sys
 import email
 import datetime
+from securedata import securedata
 
 userDir = pwd.getpwuid( os.getuid() )[ 0 ]
 
 sys.path.insert(0, f'/home/{userDir}/Git/Tools')
-sys.path.insert(0, f'/home/{userDir}/Git/SecureData')
 
 import mail
-import secureData
 
 
 data = mail.check()
@@ -150,12 +149,12 @@ def main():
     # assumes date in email is in format like: Dec 9, 2021
     if(results_body): 
         if('Check-Out:' in results_body):
-            if(len(results_body.split('Check-Out:')[1].split('\n')[0].strip())):
+            if(results_body.split('Check-Out:')[1].split('\n')[0].strip()):
                 results_checkout = results_body.split('Check-Out:')[1].split('\n')[0].strip()
-            elif(len(results_body.split('Check-Out:')[1].split('\n')[1].strip())):
+            elif(results_body.split('Check-Out:')[1].split('\n')[1].strip()):
                 results_checkout = results_body.split('Check-Out:')[1].split('\n')[1].strip()
             else:
-                secureData.log("Checked for Evolve reservations - found one but couldn't parse check-out date")
+                securedata.log("Checked for Evolve reservations - found one but couldn't parse check-out date")
                 quit()
             
             results_cleaning_date = (datetime.datetime.strptime(results_checkout, "%b %d, %Y") + datetime.timedelta(days=1))
@@ -170,16 +169,16 @@ def main():
                 email = f"""Hi,\n\nCould you please schedule a cleaning again at {results_address} at any time on {results_cleaning_date_string}?"""
 
             # send email
-            if(results_cleaning_date_string_log not in '\n'.join(secureData.getFileAsArray("AIRBNB_CHECKOUT_LOG"))):
-                secureData.log(results_cleaning_date.strftime('%Y-%m-%d'), "AIRBNB_CHECKOUT_LOG")
-                mail.send(f"Cleaning Request, {results_cleaning_date_string}", email, secureData.getItem("airbnb", "email_signature"), secureData.getItem("airbnb", "cleaner_email"), "Tyler Woodfin")
-                secureData.log(f"Checked for Evolve reservations - found and sent to {secureData.getItem('airbnb', 'cleaner_email')}")
+            if(results_cleaning_date_string_log not in '\n'.join(securedata.getFileAsArray("AIRBNB_CHECKOUT_LOG"))):
+                securedata.log(results_cleaning_date.strftime('%Y-%m-%d'), "AIRBNB_CHECKOUT_LOG")
+                mail.send(f"Cleaning Request, {results_cleaning_date_string}", email, securedata.getItem("airbnb", "email_signature"), securedata.getItem("airbnb", "cleaner_email"), "Tyler Woodfin")
+                securedata.log(f"Checked for Evolve reservations - found and sent to {securedata.getItem('airbnb', 'cleaner_email')}")
             else:
-                secureData.log("Checked for Evolve reservations - found only existing reservations")
+                securedata.log("Checked for Evolve reservations - found only existing reservations")
         else:
-            secureData.log("Checked for Evolve reservations - found reservation, but no Check-Out Date")
+            securedata.log("Checked for Evolve reservations - found reservation, but no Check-Out Date")
     else:
-        secureData.log("Checked for Evolve reservations- none found")
+        securedata.log("Checked for Evolve reservations- none found")
 
 params = {
 	"calendar": calendar
