@@ -6,17 +6,10 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 import os
-import pwd
 import sys
 import email
 import datetime
-from securedata import securedata
-
-userDir = pwd.getpwuid( os.getuid() )[ 0 ]
-
-sys.path.insert(0, f'/home/{userDir}/Git/Tools')
-
-import mail
+from securedata import securedata, mail
 
 
 data = mail.check()
